@@ -36,16 +36,39 @@ namespace BBDD_TPI_Generadores.Generators
                     DateTime endTimeAsDateTime = DateTime.Today.Add(finishingTime.ToTimeSpan());
                     var propertyId = propertiesIds[random.Next(propertiesIds.Length)];
                     var staffId = staffIds[random.Next(staffIds.Length)];
-                    // TODO: mirar si queremos hacer el field de type y description!!!
+                   
 
-                    var insertQuery = "INSERT INTO properties_maintenance_services (maintenance_date, starting_time, finishing_time, staff_id, property_id) " +
-                                           "VALUES (@maintenanceDate,@startTimeAsDateTime,@endTimeAsDateTime,@staffId,@propertyId)";
+                    var specialties = connection.Query<string>("SELECT s.name " +
+                                                      "FROM maintenance_staff m " +
+                                                      "INNER JOIN maintenance_staff_specialties ms ON m.id = ms.staff_id " +
+                                                      "INNER JOIN specialties s ON s.id = ms.specialty_id " +
+                                                      "WHERE m.id = @staffId", new { staffId }).ToList();
+
+                    string type;
+
+                    if (specialties.Any())
+                    {
+                        // If staff has specialties, randomly choose one
+                        type = specialties[random.Next(specialties.Count)];
+                    }
+                    else
+                    {
+                        // If staff has no specialties, use a general type
+                        type = "General Maintenance";
+                    }
+                    var description = faker.Lorem.Sentence(5);
+
+
+                    var insertQuery = "INSERT INTO properties_maintenance_services (maintenance_date, starting_time, finishing_time,type,description, staff_id, property_id) " +
+                                           "VALUES (@maintenanceDate,@startTimeAsDateTime,@endTimeAsDateTime,@type,@description,@staffId,@propertyId)";
 
                     int rowsAffected = connection.Execute(insertQuery, new
                     {
                         maintenanceDate,
                         startTimeAsDateTime,
                         endTimeAsDateTime,
+                        type,
+                        description,
                         staffId,
                         propertyId,
 

@@ -17,5 +17,6 @@ Console.ReadLine();
 //PropCleaningServiceGen.Generate(2000);
 //PropMaintenanceServiceGen.Generate(20);
 //ReservationGen.Generate(2000);
-
-//TODO: gen para q 1 empleado de limpieza trabaje en TODAS las propiedades!!!
+//PropCleaningServiceALLGen.Generate();
+//OpinionGen.Generate();
+//PaymentGen.Generate();
