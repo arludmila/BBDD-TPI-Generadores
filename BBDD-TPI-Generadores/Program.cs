@@ -16,7 +16,7 @@ Console.ReadLine();
 //PropertyGen.Generate(60);
 //PropCleaningServiceGen.Generate(2000);
 //PropMaintenanceServiceGen.Generate(20);
-//ReservationGen.Generate(2000);
+ReservationGen.Generate(50);
 //PropCleaningServiceALLGen.Generate();
 //OpinionGen.Generate();
 //PaymentGen.Generate();

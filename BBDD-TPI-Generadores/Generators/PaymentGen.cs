@@ -42,7 +42,15 @@ namespace BBDD_TPI_Generadores.Generators
                     string paymentType;
 
                     // TODO: ??? random o na? service fee?
-                    double debt = 0;
+                    var reservationTotalAmountQuery = "SELECT total_amount FROM reservations WHERE id = @reservationId";
+
+                    var reservationTotalAmount = connection.Query<double>(reservationTotalAmountQuery, new { reservationId }).FirstOrDefault();
+
+                    double randomPercentage = random.NextDouble() * 0.5 + 0.5;
+
+                    // Calculate the random amount
+                    double totalPayed = reservationTotalAmount * randomPercentage;
+
                     double serviceFee = 0.15;
                     //
 
@@ -66,22 +74,19 @@ namespace BBDD_TPI_Generadores.Generators
                             break;
                     }
 
-                    var reservationTotalAmountQuery = "SELECT total_amount FROM reservations WHERE id = @reservationId";
-
-                    var reservationTotalAmount = connection.Query<double>(reservationTotalAmountQuery, new { reservationId }).FirstOrDefault();
+                    
 
                     try
                     {
-                        var insertQuery = "INSERT INTO payments (doc_type , doc_id , payment_type, payed_amount , debt , service_fee , reservation_id ) " +
-                                          "VALUES (@docType, @docNum, @paymentType, @reservationTotalAmount, @debt, @serviceFee, @reservationId)";
+                        var insertQuery = "INSERT INTO payments (doc_type , doc_id , payment_type, payed_amount , service_fee , reservation_id ) " +
+                                          "VALUES (@docType, @docNum, @paymentType, @totalPayed, @serviceFee, @reservationId)";
 
                         int rowsAffected = connection.Execute(insertQuery, new
                         {
                             docType,
                             docNum,
                             paymentType,
-                            reservationTotalAmount,
-                            debt,
+                            totalPayed,
                             serviceFee,
                             reservationId
                         });

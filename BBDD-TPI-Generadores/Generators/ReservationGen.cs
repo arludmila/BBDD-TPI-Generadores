@@ -46,20 +46,19 @@ namespace BBDD_TPI_Generadores.Generators
 
                     double totalAmount = propertyDailyPrice * daysDifference;
                     int guests = random.Next(1, propertyCapacity);
-
-                    var insertQuery = "INSERT INTO reservations (check_in, check_out, guests, total_amount, property_id,guest_id) " +
-                                           "VALUES (@checkIn,@checkOut,@guests,@totalAmount,@propertyId,@guestId)";
+                    var insertQuery = "INSERT INTO reservations (check_in, check_out, guests, total_amount, property_id, guest_id) " +
+                                      "VALUES (@checkIn, @checkOut, @guests, @totalAmount, @propertyId, @guestId)";
 
                     int rowsAffected = connection.Execute(insertQuery, new
                     {
                         checkIn,
                         checkOut,
                         guests,
-                        totalAmount,
+                        totalAmount = propertyDailyPrice * daysDifference, // Use the calculated difference directly
                         propertyId,
                         guestId,
-
                     });
+
 
                     if (rowsAffected > 0)
                     {
