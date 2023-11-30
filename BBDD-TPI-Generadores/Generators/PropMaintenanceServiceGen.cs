@@ -25,7 +25,7 @@ namespace BBDD_TPI_Generadores.Generators
                 {
                     // TODO: validacion de shift? le corresponde?
                     DateTime today = DateTime.Now;
-                    DateTime twoYearsAgo = today.AddYears(-2);
+                    DateTime twoYearsAgo = today.AddYears(-7);
                     TimeSpan range = today - twoYearsAgo;
                     TimeSpan randomRange = new TimeSpan((long)(random.NextDouble() * range.Ticks));
                     //
